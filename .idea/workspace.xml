@@ -17,8 +17,8 @@
       <file leaf-file-name="bot.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="129">
-              <caret line="57" column="43" lean-forward="false" selection-start-line="57" selection-start-column="43" selection-end-line="57" selection-end-column="43" />
+            <state relative-caret-position="279">
+              <caret line="61" column="33" lean-forward="false" selection-start-line="61" selection-start-column="33" selection-end-line="61" selection-end-column="33" />
               <folding>
                 <element signature="e#43#56#0" expanded="true" />
               </folding>
@@ -119,7 +119,14 @@
       <option name="project" value="LOCAL" />
       <updated>1518000385177</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added multithreading. TODO: Add queues and wordlists">
+      <created>1518007544472</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1518007544472</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -150,7 +157,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="New protocols" />
-    <option name="LAST_COMMIT_MESSAGE" value="New protocols" />
+    <MESSAGE value="Added multithreading. TODO: Add queues and wordlists" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added multithreading. TODO: Add queues and wordlists" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -173,6 +181,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4232">
           <caret line="138" column="8" lean-forward="false" selection-start-line="138" selection-start-column="8" selection-end-line="138" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -184,10 +193,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2017.3/system/python_stubs/-1334026278/_socket.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="1033" column="8" lean-forward="false" selection-start-line="1033" selection-start-column="8" selection-end-line="1033" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/bot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="57" column="43" lean-forward="false" selection-start-line="57" selection-start-column="43" selection-end-line="57" selection-end-column="43" />
+        <state relative-caret-position="279">
+          <caret line="61" column="33" lean-forward="false" selection-start-line="61" selection-start-column="33" selection-end-line="61" selection-end-column="33" />
           <folding>
             <element signature="e#43#56#0" expanded="true" />
           </folding>
