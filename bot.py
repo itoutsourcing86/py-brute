@@ -10,7 +10,7 @@ def save_data(data):
         f.write(data)
 
 
-class Ssh_bot(object):
+class Bot(object):
     def __init__(self, start_ip, end_ip, port, username, password):
         self.start_ip = start_ip
         self.end_ip = end_ip
@@ -47,6 +47,8 @@ class Ssh_bot(object):
             print("[ERROR] Connection is %s"% e)
             return False
 
+
+class Ssh(Bot):
     def login(self):
         try:
             ssh_cli = paramiko.SSHClient()
@@ -63,8 +65,16 @@ class Ssh_bot(object):
             print(host)
 
 
+class Telnet(Bot, Ssh):
+    pass
+
+
+class Rdp(Bot):
+    pass
+
+
 def main():
-    bot = Ssh_bot("192.168.1.1", "192.168.1.254", 22, "root", "p@ssw0rd")
+    bot = Ssh("192.168.1.1", "192.168.1.254", 22, "root", "p@ssw0rd")
     bot.run()
 
 
