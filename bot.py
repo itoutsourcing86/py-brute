@@ -41,9 +41,9 @@ class Worker(threading.Thread):
         self.password = password
 
     def run(self):
-        self.check_connect()
+        self.check()
 
-    def check_connect(self):
+    def check(self):
         try:
             cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             cli.settimeout(5)
